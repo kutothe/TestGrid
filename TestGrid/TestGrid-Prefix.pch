@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'TestGrid' target in the 'TestGrid' project
+//
+
+#ifdef __OBJC__
+  #import <Cocoa/Cocoa.h>
+#endif
