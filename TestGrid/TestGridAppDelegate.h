@@ -18,4 +18,6 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (nonatomic, retain) TransparentWindow *transWindow;
 
+- (void)showGrid;
+
 @end

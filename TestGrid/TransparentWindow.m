@@ -31,7 +31,8 @@
 - (void)resetFrame
 {
   NSRect screen = [[NSScreen mainScreen] frame];
-  [self setFrame:screen display:NO];
+  CGRect newFrame = CGRectMake(screen.size.width / 2, screen.size.height / 2, 250, 150);
+  [self setFrame:newFrame display:NO];
 }
 
 @end

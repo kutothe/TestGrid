@@ -27,7 +27,7 @@ int const GRIDROWS = 3;
   NSRect bounds = [self bounds];
   
   NSBezierPath* clipShape = [NSBezierPath bezierPath];
-  [clipShape appendBezierPathWithRoundedRect:bounds xRadius:40 yRadius:30];
+  [clipShape appendBezierPathWithRoundedRect:bounds xRadius:8 yRadius:8];
   
   NSBezierPath* oneGrid = [NSBezierPath bezierPath];
   [oneGrid appendBezierPathWithRoundedRect:NSMakeRect(25, 25, 50, 50) xRadius:4 yRadius:4];
@@ -82,8 +82,8 @@ int const GRIDROWS = 3;
 - (void)fade
 {
   [self setAlphaValue:1.0];
-  
-  [[NSAnimationContext currentContext] setDuration:1.0];
+    
+  [[NSAnimationContext currentContext] setDuration:0.5];
   [[self animator] setAlphaValue:0.0];  
 }
 
