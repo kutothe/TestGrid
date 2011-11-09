@@ -10,7 +10,7 @@
 
 @implementation NotificationView
 
-@synthesize numRows, numCols, spaceWidth, spaceHeight, spacePadding;
+@synthesize numRows, numCols, spaceWidth, spaceHeight, spacePadding, currentSpace, previousSpace;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -22,22 +22,33 @@
 {
   [[NSGraphicsContext currentContext] saveGraphicsState];
   NSRect bounds = [self bounds];
-  
   NSBezierPath* clipShape = [NSBezierPath bezierPath];
   [clipShape appendBezierPathWithRoundedRect:bounds xRadius:8 yRadius:8];
   [clipShape setWindingRule:NSEvenOddWindingRule];
   
+  // all of the clipped out spaces that will be mostly transparent
   NSBezierPath* spacesPath = [NSBezierPath bezierPath];
+
+  // the path that should be highlighted white
+  NSBezierPath* highlightPath = nil;
   
   int k = 0;
-  for (k=0; k < numRows; k++) {
+  for (k=0; k < self.numRows; k++) {
     int i = 0;
-    for (i=0; i < numCols; i++) {
+    for (i=0; i < self.numCols; i++) {
+      int spaceNumber = i+(k*self.numCols)+1;
+      
       NSBezierPath* oneGrid = [NSBezierPath bezierPath];
       int xPos = (spacePadding*(i+1))+(spaceWidth*i);
-      int yPos = (spacePadding*(k+1))+(spaceHeight*k);
-      [oneGrid appendBezierPathWithRoundedRect:NSMakeRect(xPos, yPos, spaceWidth, spaceHeight) xRadius:4 yRadius:4];
+      int yPos = (spacePadding*(self.numRows-k))+(spaceHeight*(self.numRows-k-1));
+      [oneGrid appendBezierPathWithRoundedRect:NSMakeRect(xPos, yPos, spaceWidth, spaceHeight) xRadius:2 yRadius:2];
+      
       [spacesPath appendBezierPath:oneGrid];
+      
+      if (spaceNumber == self.currentSpace) {
+        NSLog(@"%d space", spaceNumber);
+        highlightPath = [NSBezierPath bezierPathWithRoundedRect:NSMakeRect(xPos+2, yPos+2, spaceWidth-4, spaceHeight-4) xRadius:4 yRadius:4];
+      }
     }
   }
   [clipShape appendBezierPath: spacesPath];
@@ -59,11 +70,15 @@
   [clipShape stroke];
   [[NSGraphicsContext currentContext] restoreGraphicsState];
   
-  //[[NSGraphicsContext currentContext] setCompositingOperation:NSCompositeSourceOver];
-  [[[NSColor blackColor] colorWithAlphaComponent:0.15] setFill];
+  [[[NSColor blackColor] colorWithAlphaComponent:0.35] setFill];
   [spacesPath fill];
-  [[[NSColor blackColor] colorWithAlphaComponent:0.3] setStroke];
+  [[[NSColor blackColor] colorWithAlphaComponent:0.5] setStroke];
   [spacesPath stroke];
+  
+  if (highlightPath != nil) {
+    [[[NSColor whiteColor] colorWithAlphaComponent:0.9] setFill];
+    [highlightPath fill];
+  }
   
 }
 

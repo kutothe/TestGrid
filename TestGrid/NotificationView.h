@@ -15,6 +15,8 @@
   int spaceWidth;
   int spaceHeight;
   int spacePadding;
+  int currentSpace;
+  int previousSpace;
 }
 
 @property (assign) int numCols;
@@ -22,6 +24,8 @@
 @property (assign) int spaceWidth;
 @property (assign) int spaceHeight;
 @property (assign) int spacePadding;
+@property (assign) int currentSpace;
+@property (assign) int previousSpace;
 
 
 - (void) fade;

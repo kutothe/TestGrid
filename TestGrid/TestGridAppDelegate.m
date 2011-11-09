@@ -37,6 +37,8 @@ int const SPACEPADDING = 9;
   notificationView.spaceWidth = SPACEWIDTH;
   notificationView.spaceHeight = SPACEHEIGHT;
   notificationView.spacePadding = SPACEPADDING;
+  notificationView.currentSpace = 4;
+  notificationView.previousSpace = 3;
   
   [self.transWindow setContentView:notificationView];
   [self.transWindow display];  // make ready for display when the window is ordered front
