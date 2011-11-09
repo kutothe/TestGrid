@@ -10,6 +10,11 @@
 #import "NotificationView.h"
 #import "TransparentWindow.h"
 
+extern int const NUMROWS;
+extern int const NUMCOLS;
+extern int const SPACEWIDTH;
+extern int const SPACEPADDING;
+
 @interface TestGridAppDelegate : NSObject <NSApplicationDelegate> {
   NSWindow *window;
   TransparentWindow *transWindow;

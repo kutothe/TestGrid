@@ -10,72 +10,61 @@
 
 @implementation NotificationView
 
-
-int const GRIDCOLUMNS = 3;
-int const GRIDROWS = 3;
+@synthesize numRows, numCols, spaceWidth, spaceHeight, spacePadding;
 
 - (id)initWithFrame:(NSRect)frame
 {
   self = [super initWithFrame:frame];
-  int width = frame.size.width;
-  NSLog(@"frame width: %d", width);
   return self;
 }
 
 - (void) drawRect:(CGRect)rect
 {
+  [[NSGraphicsContext currentContext] saveGraphicsState];
   NSRect bounds = [self bounds];
   
   NSBezierPath* clipShape = [NSBezierPath bezierPath];
   [clipShape appendBezierPathWithRoundedRect:bounds xRadius:8 yRadius:8];
-  
-  NSBezierPath* oneGrid = [NSBezierPath bezierPath];
-  [oneGrid appendBezierPathWithRoundedRect:NSMakeRect(25, 25, 50, 50) xRadius:4 yRadius:4];
-  
-  
   [clipShape setWindingRule:NSEvenOddWindingRule];
-  [clipShape appendBezierPath: oneGrid];
-  [clipShape addClip];
+  
+  NSBezierPath* spacesPath = [NSBezierPath bezierPath];
+  
+  int k = 0;
+  for (k=0; k < numRows; k++) {
+    int i = 0;
+    for (i=0; i < numCols; i++) {
+      NSBezierPath* oneGrid = [NSBezierPath bezierPath];
+      int xPos = (spacePadding*(i+1))+(spaceWidth*i);
+      int yPos = (spacePadding*(k+1))+(spaceHeight*k);
+      [oneGrid appendBezierPathWithRoundedRect:NSMakeRect(xPos, yPos, spaceWidth, spaceHeight) xRadius:4 yRadius:4];
+      [clipShape appendBezierPath: oneGrid];
+      [clipShape addClip];
+      
+      [spacesPath appendBezierPath:oneGrid];
+    }
+  }
   
   NSGradient* aGradient = [[[NSGradient alloc]
                             initWithColorsAndLocations:[NSColor colorWithCalibratedRed:143/255.0 green:153/255.0 blue:155/255.0 alpha:1.0f], (CGFloat)0.0,
-                            [NSColor colorWithCalibratedRed:30/255.0 green:40/255.0 blue:39/255.0 alpha:1.0f], (CGFloat)0.30,
-                            [NSColor colorWithCalibratedRed:19/255.0 green:31/255.0 blue:29/255.0 alpha:1.0f], (CGFloat)0.33,
+                            [NSColor colorWithCalibratedRed:143/255.0 green:153/255.0 blue:155/255.0 alpha:1.0f], (CGFloat)2.0,
+                            [NSColor colorWithCalibratedRed:30/255.0 green:40/255.0 blue:39/255.0 alpha:1.0f], (CGFloat)0.55,
+                            [NSColor colorWithCalibratedRed:19/255.0 green:31/255.0 blue:29/255.0 alpha:1.0f], (CGFloat)0.58,
                             [NSColor colorWithCalibratedRed:21/255.0 green:35/255.0 blue:46/255.0 alpha:1.0f], (CGFloat)1.0,
                             nil] autorelease];
   
   
   [aGradient drawInBezierPath:clipShape angle:-90.0];
-  
+
+  [clipShape setLineWidth:2];
   [clipShape stroke];
-  /*
-	// Drawing code here.
-  int width = rect.size.width;
-  int height = rect.size.height;
+  [[NSGraphicsContext currentContext] restoreGraphicsState];
   
-  NSLog(@"Width: %d", width);
+  //[[NSGraphicsContext currentContext] setCompositingOperation:NSCompositeSourceOver];
+  [[[NSColor blackColor] colorWithAlphaComponent:0.15] setFill];
+  [spacesPath fill];
+  [[[NSColor blackColor] colorWithAlphaComponent:0.3] setStroke];
+  [spacesPath stroke];
   
-  int i = 0;
-  
-  // Set the color in the current graphics context for future draw operations
-  [[NSColor lightGrayColor] setStroke];
-  
-  // Create our drawing path
-  
-  NSBezierPath* drawingPath = [NSBezierPath bezierPath];
-  
-  // Draw a grid
-  // first the vertical lines
-  for( i = 0 ; i <= width ; i=i+(width/GRIDCOLUMNS)) {
-    [drawingPath moveToPoint:NSMakePoint(i, 0)]; [drawingPath lineToPoint:NSMakePoint(i, height)];
-  }
-  // then the horizontal lines
-  for( i = 0 ; i <= height ; i=i+(height/GRIDROWS) ) {
-    [drawingPath moveToPoint:NSMakePoint(0,i)]; [drawingPath lineToPoint:NSMakePoint(width, i)];
-  }
-  // actually draw the grid
-  [drawingPath stroke];
-   */
 }
 
 

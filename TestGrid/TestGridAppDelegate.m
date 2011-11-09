@@ -12,16 +12,16 @@
 
 @synthesize window, transWindow;
 
+int const NUMROWS = 3;
+int const NUMCOLS = 3;
+int const SPACEWIDTH = 70;
+int const SPACEHEIGHT = 40;
+int const SPACEPADDING = 9;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-  NSButton *myButton = [[NSButton alloc] initWithFrame:CGRectMake(50, 50, 100, 25)];
-  [myButton setTitle:@"der"];
-  [myButton setTarget:self];
-  [myButton setAction:@selector(showGrid)];
-  
-  [[self.window contentView] addSubview:myButton];
-  
   self.transWindow = [[[TransparentWindow alloc] init] autorelease];
+  [self.transWindow calculateSize:NUMROWS numCols:NUMCOLS spaceWidth:SPACEWIDTH spaceHeight:SPACEHEIGHT spacePadding:SPACEPADDING];
   [transWindow setCollectionBehavior: NSWindowCollectionBehaviorCanJoinAllSpaces];
   
   [self showGrid];
@@ -32,6 +32,11 @@
   [self.transWindow resetFrame];  // the screen size may have changed if using ext monitors etc
   
   NotificationView *notificationView = [[[NotificationView alloc] initWithFrame:self.transWindow.frame] autorelease];
+  notificationView.numRows = NUMROWS;
+  notificationView.numCols = NUMCOLS;
+  notificationView.spaceWidth = SPACEWIDTH;
+  notificationView.spaceHeight = SPACEHEIGHT;
+  notificationView.spacePadding = SPACEPADDING;
   
   [self.transWindow setContentView:notificationView];
   [self.transWindow display];  // make ready for display when the window is ordered front
