@@ -37,12 +37,12 @@
       int xPos = (spacePadding*(i+1))+(spaceWidth*i);
       int yPos = (spacePadding*(k+1))+(spaceHeight*k);
       [oneGrid appendBezierPathWithRoundedRect:NSMakeRect(xPos, yPos, spaceWidth, spaceHeight) xRadius:4 yRadius:4];
-      [clipShape appendBezierPath: oneGrid];
-      [clipShape addClip];
-      
       [spacesPath appendBezierPath:oneGrid];
     }
   }
+  [clipShape appendBezierPath: spacesPath];
+  [clipShape addClip];
+  
   
   NSGradient* aGradient = [[[NSGradient alloc]
                             initWithColorsAndLocations:[NSColor colorWithCalibratedRed:143/255.0 green:153/255.0 blue:155/255.0 alpha:1.0f], (CGFloat)0.0,
